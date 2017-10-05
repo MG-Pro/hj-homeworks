@@ -1,22 +1,19 @@
 @import "reset.min.css";
-
 *,
 *:after,
 *:before {
   box-sizing: border-box;
 }
-
 body {
-font-family: 'Lato', 'Arial', sans-serif;
-background: #DDD url('../i/bg.jpg');
-font-weight: 300;
-font-size: 15px;
-color: #333333;
--webkit-font-smoothing: antialiased;
-overflow-y: scroll;
-overflow-x: hidden;
+  font-family: 'Lato', 'Arial', sans-serif;
+  background: #dddddd url('../i/bg.jpg');
+  font-weight: 300;
+  font-size: 15px;
+  color: #333333;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
-
 .wrapper-dropdown {
   /* Size & position */
   position: relative;
@@ -25,9 +22,9 @@ overflow-x: hidden;
   padding: 12px 15px;
 
   /* Styles */
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 5px;
-  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
   outline: none;
   -webkit-transition: all 0.3s ease-out;
@@ -36,7 +33,6 @@ overflow-x: hidden;
   -o-transition: all 0.3s ease-out;
   transition: all 0.3s ease-out;
 }
-
 /* Little arrow */
 .wrapper-dropdown:after {
   content: "";
@@ -50,7 +46,6 @@ overflow-x: hidden;
   border-style: solid;
   border-color: #4cbeff transparent;
 }
-
 /* Size & position */
 .wrapper-dropdown .dropdown {
   position: absolute;
@@ -59,9 +54,9 @@ overflow-x: hidden;
   right: 0;
 
   /* Styles */
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 0 0 5px 5px;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-top: none;
   border-bottom: none;
   list-style: none;
@@ -75,11 +70,9 @@ overflow-x: hidden;
   max-height: 0;
   overflow: hidden;
 }
-
 .wrapper-dropdown .dropdown li {
-  padding: 0 10px ;
+  padding: 0 10px;
 }
-
 .wrapper-dropdown .dropdown li a {
   display: block;
   text-decoration: none;
@@ -88,36 +81,30 @@ overflow-x: hidden;
   transition: all 0.3s ease-out;
   border-bottom: 1px solid #e6e8ea;
 }
-
 .wrapper-dropdown .dropdown li:last-of-type a {
   border: none;
 }
-
 .wrapper-dropdown .dropdown li i {
   margin-right: 5px;
   color: inherit;
   vertical-align: middle;
 }
-
 /* Hover state */
 .wrapper-dropdown .dropdown li:hover a {
   color: #57a9d9;
 }
-
 /* Active state */
 .wrapper-dropdown.active {
   border-radius: 5px 5px 0 0;
   background: #4cbeff;
   box-shadow: none;
   border-bottom: none;
-  color: #FFFFFF;
+  color: #ffffff;
 }
-
 .wrapper-dropdown.active:after {
   border-color: #82d1ff transparent;
 }
-
 .wrapper-dropdown.active .dropdown {
-  border-bottom: 1px solid rgba(0,0,0,0.2);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   max-height: 400px;
 }
