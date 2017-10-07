@@ -1,8 +1,9 @@
 'use strict';
-document.onreadystatechange = function () {
-  if (document.readyState === 'interactive') {
-    let list = document.getElementsByTagName('audio')
-    console.log(list);
-    list[0].paused = false;
-
-  }};
+window.onload = function () {
+  let list = Array.from(document.getElementsByClassName('drum-kit__drum'));
+  list.forEach((val) => {
+    val.onclick = function () {
+      this.getElementsByTagName('audio')[0].play();
+    };
+  });
+};
