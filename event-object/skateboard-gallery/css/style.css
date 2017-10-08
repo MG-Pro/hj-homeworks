@@ -1,44 +1,35 @@
 @import "normalize.css";
-
 body {
-	font-family: sans-serif;
+  font-family: sans-serif;
   padding: 0px 20px 20px;
 }
-
 .gallery-view {
-	display: block;
+  display: block;
 }
-
 .gallery-nav {
-	padding: 0;
+  padding: 0;
 }
-
 .gallery-nav a {
-	display: block;
-	float: left;
-	width: 80px;
-	height: 80px;
-	margin: 10px 10px 10px 0;
-	border: solid 1px #eee;
+  display: block;
+  float: left;
+  width: 80px;
+  height: 80px;
+  margin: 10px 10px 10px 0;
+  border: solid 1px #eeeeee;
   overflow: hidden;
 }
-
 .gallery-nav a:hover {
-	outline: 3px solid #99f;
+  outline: 3px solid #9999ff;
 }
-
 .gallery-nav a:active {
-	outline: 3px solid #f99;
+  outline: 3px solid #ff9999;
 }
-
 .gallery-nav a.gallery-current {
-	outline: 3px solid #ff9;
+  outline: 3px solid #ffff99;
 }
-
 .gallery-nav a img {
-	width: 80px;
+  width: 80px;
 }
-
 .gallery-nav a.gallery-current img {
-	top: -80px;
+  top: -80px;
 }
