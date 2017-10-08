@@ -2,11 +2,9 @@
 window.onload = function () {
 
   const keyCodes = [17, 18, 84];
-  const secretWord = 'ytnjkubz';
-  const secretCodes = secretWord.split('').map(function (val) {
-    return val.charCodeAt(0);
-  });
+  const secretWord = [89, 84, 78, 74, 75, 74, 85, 66, 90];
 
+  let secretPressed = {};
   let pressed = {};
 
   document.addEventListener('keydown', function (e) {
@@ -17,8 +15,6 @@ window.onload = function () {
     }
     pressed = {};
     document.getElementsByTagName('nav')[0].classList.add('visible');
-
-
 
   });
 
