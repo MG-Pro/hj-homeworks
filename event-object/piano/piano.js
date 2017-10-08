@@ -27,5 +27,25 @@ window.onload = function () {
     }
   });
 
+  piano.addEventListener('click', function (e) {
+    let tone = 'middle';
+    if (e.altKey)
+      tone = 'lower';
+    else if (e.shiftKey)
+      tone = 'higher';
+
+    let trackIndex;
+    let buttons = piano.getElementsByTagName('li');
+    for (let i = 0; i < buttons.length; i++) {
+      if (buttons[i] === e.target) {
+        trackIndex = i;
+        break;
+      }
+    }
+
+    let audio = e.target.getElementsByTagName('audio')[0];
+    audio.src = `sounds/${tone}/${tracks[trackIndex]}`;
+    audio.play();
+  });
 };
 
