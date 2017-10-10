@@ -1,5 +1,5 @@
 'use strict';
-document.addEventListener('DOMContentLoaded', function (e) {
+document.addEventListener('DOMContentLoaded', function () {
 
   const listElem = document.querySelector('.contacts-list');
   listElem.removeChild(document.querySelector('.contacts-list li'));
