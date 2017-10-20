@@ -1,10 +1,16 @@
 document.addEventListener('DOMContentLoaded', function () {
   const links = document.querySelectorAll('nav a');
+  const content = document.getElementById('content');
 
   for (let link of links) {
+    link.classList.remove('active');
     link.addEventListener('click', function (e) {
+
       e.preventDefault();
-      let preloader = document.getElementById('preloader');
+      if(link.classList.contains('active'))
+        return;
+
+      const preloader = document.getElementById('preloader');
       preloader.classList.remove('hidden');
       let xhr = new XMLHttpRequest();
       xhr.open(
@@ -18,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
         preloader.classList.add('hidden');
-        document.getElementById('content').innerHTML = xhr.responseText;
+        content.innerHTML = xhr.responseText;
         link.classList.add('active');
       });
       for (let link of links) {
@@ -26,7 +32,4 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-
-
-
 });
