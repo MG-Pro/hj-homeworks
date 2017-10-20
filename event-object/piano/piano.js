@@ -28,6 +28,8 @@ window.onload = function () {
   });
 
   piano.addEventListener('click', function (e) {
+    if(e.target.nodeName != 'LI')
+      return;
     let tone = 'middle';
     if (e.altKey)
       tone = 'lower';
