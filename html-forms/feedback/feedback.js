@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
     Array.from(outputs).forEach(function (val) {
       for (let input of inputs) {
         if (val.id === input.name)
-          val.innerHTML = input.value;
+          val.value = input.value;
       }
       if (val.id === 'message')
-        val.innerHTML = textarea.value;
+        val.value = textarea.value;
     });
   });
 
