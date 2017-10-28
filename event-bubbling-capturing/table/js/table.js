@@ -49,11 +49,11 @@ function sortTable(prop, dir) {
 }
 
 const data = [
-  { 'firstName': 'Роберт', 'lastName': 'Паттинсон', 'birth': 1986 },
-  { 'firstName': 'Михаил', 'lastName': 'Боярский', 'birth': 1949 },
-  { 'firstName': 'Киану', 'lastName': 'Ривз', 'birth': 1964 },
-  { 'firstName': 'Константин', 'lastName': 'Хабенский', 'birth': 1972 },
-  { 'firstName': 'Владимир', 'lastName': 'Машков', 'birth': 1963 }
+  {'firstName': 'Роберт', 'lastName': 'Паттинсон', 'birth': 1986},
+  {'firstName': 'Михаил', 'lastName': 'Боярский', 'birth': 1949},
+  {'firstName': 'Киану', 'lastName': 'Ривз', 'birth': 1964},
+  {'firstName': 'Константин', 'lastName': 'Хабенский', 'birth': 1972},
+  {'firstName': 'Владимир', 'lastName': 'Машков', 'birth': 1963}
 ];
 
 showRows(document.querySelector('table'), data);
