@@ -31,7 +31,7 @@ function showBubbles(target) {
     for (const point of points) {
       c.beginPath();
       c.fillStyle = point.color;
-      c.arc(point.x, point.y, point.radius, 0, Math.PI * 2, false);
+      c.arc(point.pageX, point.pageY, point.radius, 0, Math.PI * 2, false);
       c.fill();
     }
   }
