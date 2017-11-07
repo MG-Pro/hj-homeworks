@@ -1,5 +1,5 @@
 'use strict';
-if(!localStorage.color) {
+if (!localStorage.color) {
   fetch('https://neto-api.herokuapp.com/cart/colors')
     .then(response => {
       return response.text();
@@ -12,7 +12,7 @@ if(!localStorage.color) {
       console.log(error);
     });
 }
-if(!localStorage.sizes) {
+if (!localStorage.sizes) {
   fetch('https://neto-api.herokuapp.com/cart/sizes')
     .then(response => {
       return response.text();
@@ -25,7 +25,7 @@ if(!localStorage.sizes) {
       console.log(error);
     });
 }
-if(!localStorage.cart) {
+if (!localStorage.cart) {
   fetch('https://neto-api.herokuapp.com/cart')
     .then(response => {
       return response.text();
@@ -46,6 +46,8 @@ try {
   console.log(new Error(e));
 }
 
+renderQuickCart(JSON.parse(localStorage.cart));
+
 const sizeSwatch = document.querySelector('#sizeSwatch');
 const colorSwatch = document.querySelector('#colorSwatch');
 
@@ -64,7 +66,7 @@ color.forEach(val => {
   input.value = val.type;
   input.type = 'radio';
   input.name = 'color';
-  if(val.type === 'red') {
+  if (val.type === 'red') {
     input.checked = true;
   }
 
@@ -78,7 +80,7 @@ color.forEach(val => {
   img.src = 'https://neto-api.herokuapp.com/hj/3.3/cart/soldout.png?10994296540668815886';
   img.classList.add('crossed-out');
 
-  if(val.isAvailable) {
+  if (val.isAvailable) {
     div.classList.add('available');
 
   } else {
@@ -105,7 +107,7 @@ sizes.forEach(val => {
   input.value = val.type;
   input.type = 'radio';
   input.name = 'sizes';
-  if(val.type === 'l') {
+  if (val.type === 'l') {
     input.checked = true;
   }
 
@@ -113,7 +115,7 @@ sizes.forEach(val => {
   label.setAttribute('for', val.type);
   label.textContent = val.title;
 
-  if(val.isAvailable) {
+  if (val.isAvailable) {
     div.classList.add('available');
   } else {
     div.classList.add('soldout');
@@ -130,16 +132,21 @@ sizes.forEach(val => {
   sizeSwatch.appendChild(div);
 });
 
-document.querySelector('#AddToCart').addEventListener('click', function (e) {
+document.querySelector('#AddToCart').addEventListener('click', actionCart);
+
+function actionCart(e) {
   e.preventDefault();
+  let path;
+  if (e.target.classList.contains('remove')) {
+    path = 'https://neto-api.herokuapp.com/cart/remove';
+  } else {
+    path = 'https://neto-api.herokuapp.com/cart';
+  }
+
   const form = document.forms.AddToCartForm;
   let formData = new FormData(form);
   formData.append('productId', form.dataset.productId);
-  for (const [k, v] of formData) {
-    console.log(k + ': ' + v);
-  }
-
-  fetch('https://neto-api.herokuapp.com/cart', {
+  fetch(path, {
     method: 'POST',
     body: formData
   })
@@ -148,17 +155,23 @@ document.querySelector('#AddToCart').addEventListener('click', function (e) {
     })
     .then(json => {
       console.log(json);
-      localStorage.sizes = JSON.stringify(json);
-      renderCart(json);
+      localStorage.cart = JSON.stringify(json);
+      renderQuickCart(json);
     })
     .catch(error => {
       console.log(error);
     });
+}
 
-});
-
-function renderCart(cart) {
+function renderQuickCart(cart) {
   const quickCart = document.querySelector('#quick-cart');
+  if (quickCart.children.length > 0) {
+    const list = Array.from(quickCart.children);
+    for (let item of list) {
+      quickCart.removeChild(item);
+    }
+  }
+
   cart.forEach(val => {
     const divMain = document.createElement('div');
     divMain.classList.add('quick-cart-product', 'quick-cart-product-static');
@@ -188,10 +201,47 @@ function renderCart(cart) {
     const spanRemove = document.createElement('span');
     spanRemove.dataset.id = val.productId;
     spanRemove.classList.add('quick-cart-product-remove', 'remove');
+    spanRemove.addEventListener('click', actionCart);
 
-
+    divWrap.appendChild(img);
+    divWrap.appendChild(spanPrice);
+    divWrap.appendChild(spanS2);
+    divMain.appendChild(divWrap);
+    divMain.appendChild(spanCount);
+    divMain.appendChild(spanRemove);
+    quickCart.appendChild(divMain);
   });
+  renderCart(cart, quickCart);
 }
+
+function renderCart(data, elem) {
+  const a = document.createElement('a');
+  a.classList.add('cart-ico');
+  a.id = 'quick-cart-pay';
+  if (data.length !== 0)
+    a.classList.add('open');
+  const spanWrap = document.createElement('span');
+
+  const strong = document.createElement('strong');
+  strong.classList.add('quick-cart-text');
+  strong.innerHTML = 'Оформить заказ<br>';
+
+  let sum = data.reduce((count, item) => {
+    return count + item.price * item.quantity;
+  }, 0);
+
+  const spanSumm = document.createElement('span');
+  spanSumm.id = 'quick-cart-price';
+  spanSumm.textContent = `$${sum}.00`;
+
+  spanWrap.appendChild(strong);
+  spanWrap.appendChild(spanSumm);
+  a.appendChild(spanWrap);
+  elem.appendChild(a);
+}
+
+
+
 
 
 
