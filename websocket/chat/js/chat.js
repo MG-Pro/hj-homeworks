@@ -67,3 +67,7 @@ function getTime() {
     min = '0' + min;
   return `${hours}:${min}`
 }
+
+setTimeout(function () {
+  ws.close(1000);
+}, 30000);
