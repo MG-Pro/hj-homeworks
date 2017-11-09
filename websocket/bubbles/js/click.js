@@ -8,8 +8,8 @@ window.addEventListener('beforeunload', () => {
 
 document.addEventListener('click', function (e) {
   const click = {};
-  click.pageX = e.pageX;
-  click.pageY = e.pageY;
+  click.x = e.pageX;
+  click.y = e.pageY;
   ws.send(JSON.stringify(click));
 
   showBubbles(ws);
