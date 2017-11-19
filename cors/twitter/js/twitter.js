@@ -1,13 +1,13 @@
 'use strict';
 
 function callback(book) {
-  document.querySelector('[data-wallpaper]').src = book.wallpaper;
-  document.querySelector('[data-username]').textContent = book.username;
-  document.querySelector('[data-description]').textContent = book.description;
-  document.querySelector('[data-pic]').src = book.pic;
-  document.querySelector('[data-tweets]').textContent = book.tweets;
-  document.querySelector('[data-followers]').textContent = book.followers;
-  document.querySelector('[data-following]').textContent = book.following;
+  for (let item in book) {
+    if(`${book[item]}`.search('https') !== -1) {
+      document.querySelector(`[data-${item}]`).src = book[item];
+    } else {
+      document.querySelector(`[data-${item}]`).textContent = book[item];
+    }
+  }
 }
 
 const script = document.createElement('script');
