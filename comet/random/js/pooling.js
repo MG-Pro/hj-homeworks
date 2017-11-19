@@ -11,13 +11,15 @@ function pooling(url) {
     xhr.send();
   }
   function listener(e) {
-    if (this.status === 200) {
+    if (this.status === 200 && typeof parseInt(e.target.responseText) === 'number') {
       const numbers = Array.from(cont.querySelectorAll('div'));
       const numberArr = numbers.filter(item => {
         item.classList.remove('flip-it');
         return item.innerText === e.target.responseText;
       });
       numberArr[0].classList.add('flip-it');
+    } else {
+      console.log(`Ошибка: ${e.target.statusText}`);
     }
   }
 }
