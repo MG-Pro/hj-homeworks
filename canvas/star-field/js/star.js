@@ -23,10 +23,10 @@ function createSky(elem) {
   ctx.fill();
 
   for (let i = 0; i <= count; i++) {
-    createStar(new randomParam(ctx));
+    createStar(new RandomParam(ctx));
   }
 
-  function randomParam(ctx) {
+  function RandomParam(ctx) {
     const colors = ['#ffffff', '#ffe9c4', '#d4fbff'];
     this.color = colors[getRandom(0, 3)];
     this.x = getRandom(2, cWidht - 2);
