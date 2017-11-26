@@ -13,7 +13,8 @@ function createCross(x, y, size, angle) {
   ctx.lineWidth = 5 * size;
   size = 20 * size;
   ctx.translate(x + size / 2, y + size / 2);
-  //ctx.rotate(angle);
+  ctx.rotate(angle);
+  ctx.translate(- (x + size / 2), - (y + size / 2));
   ctx.moveTo(x + size / 2, y);
   ctx.lineTo(x + size / 2, y + size);
   ctx.moveTo(x, y + size / 2);
