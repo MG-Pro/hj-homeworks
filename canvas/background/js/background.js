@@ -7,13 +7,13 @@ const ctx = canvas.getContext('2d');
 ctx.strokeStyle = '#fff';
 const objects = [];
 
-function createCross(x, y, size, angle = 0) {
+function createCross(x, y, size, angle) {
   ctx.save();
   ctx.beginPath();
   ctx.lineWidth = 5 * size;
   size = 20 * size;
   ctx.translate(x + size / 2, y + size / 2);
-  ctx.rotate(angle);
+  //ctx.rotate(angle);
   ctx.moveTo(x + size / 2, y);
   ctx.lineTo(x + size / 2, y + size);
   ctx.moveTo(x, y + size / 2);
@@ -38,10 +38,10 @@ function createObjects() {
     item.x = getRandom(5, canvas.width - 5);
     item.y = getRandom(5, canvas.height - 5);
     item.size = getRandom(0.1, 0.6, 2);
-    if(i < count / 2) {
+    if (i < count / 2) {
       item.func = createCross;
       item.type = 'cross';
-      item.stepAngle = getRandom(0, 1) ? getRandom(0, 0.2, 2) : getRandom(0, 0.2, 2) * - 1;
+      item.stepAngle = getRandom(0, 1) ? getRandom(0, 0.2, 2) : getRandom(0, 0.2, 2) * -1;
       item.currentAngle = 0;
     } else {
       item.func = createCircle;
@@ -51,17 +51,13 @@ function createObjects() {
   }
 }
 
-
-
-
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   objects.forEach(item => {
     const coords = item.nextPoint(item.x, item.y, Date.now());
     item.func(coords.x, coords.y, item.size, item.currentAngle += item.stepAngle);
-    //if(item.currentAngle >= Math.PI || item.currentAngle >= - Math.PI)
-    //  item.currentAngle = 0;
-    //console.log(item.currentAngle);
+    if (item.currentAngle >= 2 * Math.PI || item.currentAngle <= -2 * Math.PI)
+      item.currentAngle = 0;
   });
 }
 
@@ -84,10 +80,6 @@ function getTimeFunc() {
   }
 }
 
-function getNegativeRandom(min, max, digits) {
-  return getRandom(0,1) ? getRandom(min, max, digits) : getRandom(min, max, digits) * -1;
-}
-
 function getRandom(min, max, digits = 0) {
   return parseFloat((Math.random() * (max - min) + min).toFixed(digits));
 }
@@ -95,10 +87,17 @@ function getRandom(min, max, digits = 0) {
 createObjects();
 //setInterval(animate, 1000/20);
 
+let frameCount = 0;
+
 function tick() {
-  animate();
+  if (frameCount === 3) {
+    animate();
+    frameCount = 0;
+  }
+  frameCount++;
   requestAnimationFrame(tick);
 }
+
 tick();
 
 
