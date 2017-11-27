@@ -1,8 +1,12 @@
 'use strict';
+const errorCont = document.querySelector('#error-message');
+errorCont.style.display = 'block';
 
 if (!navigator.mediaDevices) {
-  console.log(new Error('API not support'));
+  errorCont.textContent = 'API not support';
 }
+
+
 
 navigator.mediaDevices
   .getUserMedia({video: true, audio: false})
@@ -20,4 +24,7 @@ navigator.mediaDevices
 
 
   })
-  .catch(err => console.log('oh noes'));
+  .catch(err => {
+    errorCont.textContent = 'Нет доступа к камере';
+    console.log(err);
+  });
