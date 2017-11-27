@@ -13,7 +13,7 @@ navigator.mediaDevices
     vid.width = '100%';
     vid.height = '100%';
     vidCont.appendChild(vid);
-    vid.src = stream;
+    vid.src = URL.createObjectURL(stream);
 
 
 
