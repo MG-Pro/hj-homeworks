@@ -110,7 +110,7 @@ function takePhoto(e) {
 
     } else if (e.target.textContent === 'file_upload') {
       const data = new FormData();
-      canvas.toBlob(blob => data.append('image', blob));
+      data.append('image', src);
       fetch('https://neto-api.herokuapp.com/photo-booth ', {
         method: 'POST',
         body: data
