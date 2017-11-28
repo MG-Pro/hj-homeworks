@@ -4,6 +4,7 @@ const vidCont = document.querySelector('.app');
 const errorCont = vidCont.querySelector('#error-message');
 const controls = vidCont.querySelector('.controls');
 const vid = document.createElement('video');
+const audio = document.createElement('audio');
 const canvas = document.createElement('canvas');
 
 if (!navigator.mediaDevices) {
@@ -19,7 +20,8 @@ navigator.mediaDevices
     vid.width = vidCont.clientWidth;
     vid.height = vidCont.clientHeight;
     vid.src = URL.createObjectURL(stream);
-
+    audio.src = 'audio/click.mp3';
+    audio.pause();
 
   })
   .catch(err => {
@@ -29,15 +31,17 @@ navigator.mediaDevices
   });
 
 function takePhoto(e) {
-  canvas.width = vid.clientWidth;
-  canvas.height = vid.clientHeight;
+  audio.play();
+  canvas.width = vid.videoWidth;
+  canvas.height = vid.videoHeight;
   vid.style.display = 'none';
   vidCont.insertBefore(canvas, controls);
   canvas.style.display = 'block';
   const ctx = canvas.getContext('2d');
   ctx.drawImage(vid, 0, 0);
-  
-  const imgNode = {
+  let src = canvas.toDataURL();
+
+  const imgNodeProps = {
     name: 'figure',
     childs: [
       {
@@ -60,33 +64,86 @@ function takePhoto(e) {
                 name: 'i',
                 props: {
                   class: 'material-icons'
-                }
-              }
+                },
+                childs: ['file_download']
+              },
+            ]
+          },
+          {
+            name: 'a',
+            childs: [
+              {
+                name: 'i',
+                props: {
+                  class: 'material-icons'
+                },
+                childs: ['file_upload']
+              },
+            ]
+          },
+          {
+            name: 'a',
+            childs: [
+              {
+                name: 'i',
+                props: {
+                  class: 'material-icons'
+                },
+                childs: ['delete']
+              },
             ]
           }
         ]
       }
     ]
   };
-  
-  createElement()
 
-}
+  const list= document.querySelector('.list');
+  const imgNode = createElement(imgNodeProps);
+  list.insertBefore(imgNode, list.firstElementChild);
+  list.addEventListener('click', listAction);
 
-function createElement(node) {
-  if (typeof node === 'string') {
-    return document.createTextNode(node);
-  }
-  const element = document.createElement(node.name);
-  if (typeof node.props === 'object' && node.props !== null) {
-    Object.keys(node.props).forEach(i => element.setAttribute(i, node.props[i]));
-  }
-  node.childs.forEach(child => {
-    if (typeof child === 'string') {
-      element.textContent = child;
-    } else {
-      element.appendChild(createElement(child));
+  function listAction(e) {
+    e.stopPropagation();
+    if(e.target.textContent === 'delete') {
+      list.removeChild(e.target.parentElement.parentElement.parentElement);
+
+    } else if (e.target.textContent === 'file_upload') {
+      const data = new FormData();
+      canvas.toBlob(blob => data.append('image', blob));
+      fetch('https://neto-api.herokuapp.com/photo-booth ', {
+        method: 'POST',
+        body: data
+      })
+        .then(res => {return res.text()})
+        .then(res => {
+          console.log(res);
+          e.target.parentNode.style.display = 'none';
+        })
+        .catch(err => console.log(err));
+
     }
-  });
-  return element;
+  }
+  
+  function createElement(node) {
+    if (typeof node === 'string') {
+      return document.createTextNode(node);
+    }
+    const element = document.createElement(node.name);
+    if (typeof node.props === 'object' && node.props !== null) {
+      Object.keys(node.props).forEach(i => element.setAttribute(i, node.props[i]));
+    }
+    if (node.childs) {
+      node.childs.forEach(child => {
+        if (typeof child === 'string') {
+          element.textContent = child;
+        } else {
+          element.appendChild(createElement(child));
+        }
+      });
+    }
+    return element;
+  }
 }
+
+
