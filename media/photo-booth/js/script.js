@@ -36,7 +36,57 @@ function takePhoto(e) {
   canvas.style.display = 'block';
   const ctx = canvas.getContext('2d');
   ctx.drawImage(vid, 0, 0);
+  
+  const imgNode = {
+    name: 'figure',
+    childs: [
+      {
+        name: 'img',
+        props: {
+          src: `${src}`
+        }
+      },
+      {
+        name: 'figcaption',
+        childs: [
+          {
+            name: 'a',
+            props: {
+              href: `${src}`,
+              download: 'snapshot.png'
+            },
+            childs: [
+              {
+                name: 'i',
+                props: {
+                  class: 'material-icons'
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  };
+  
+  createElement()
 
+}
 
-
+function createElement(node) {
+  if (typeof node === 'string') {
+    return document.createTextNode(node);
+  }
+  const element = document.createElement(node.name);
+  if (typeof node.props === 'object' && node.props !== null) {
+    Object.keys(node.props).forEach(i => element.setAttribute(i, node.props[i]));
+  }
+  node.childs.forEach(child => {
+    if (typeof child === 'string') {
+      element.textContent = child;
+    } else {
+      element.appendChild(createElement(child));
+    }
+  });
+  return element;
 }
