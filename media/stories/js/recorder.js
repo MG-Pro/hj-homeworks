@@ -64,7 +64,11 @@ function record(app, config, limit ) {
         });
 
         setTimeout(() => {
-          recorder.start(app.limit);
+          recorder.start();
+
+          setTimeout(() => {
+            recorder.stop();
+          }, app.limit);
         }, 1000);
 
         return result;
