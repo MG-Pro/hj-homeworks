@@ -36,9 +36,42 @@ function createThumbnail(video) {
   });
 }
 
-function record(app) {
+function record(app, config, limit ) {
   return new Promise((done, fail) => {
     app.mode = 'preparing';
+    app.config = config;
+    app.limit = limit;
+    navigator.mediaDevices.getUserMedia(app.config)
+      .then((stream) => {
+        app.mode = 'recording';
+        app.preview.srcObject = stream;
+        const result = {};
+        let recorder = new MediaRecorder(stream);
+        let chunks = [];
+        recorder.addEventListener('dataavailable', (e) => chunks.push(e.data));
+        recorder.addEventListener('stop', (e) => {
+          const videoData = new Blob(chunks, { 'type' : recorder.mimeType });
+          chunks = null;
+          recorder = stream = null;
+          app.mode = 'sending';
+          app.preview.srcObject = null;
+          result.video = videoData;
+          createThumbnail(videoData)
+            .then((res) => {
+              result.frame = res;
+            });
+
+        });
+
+        setTimeout(() => {
+          recorder.start(app.limit);
+        }, 1000);
+
+        return result;
+
+      });
+
+
     setTimeout(() => {
       fail('Не удалось записать видео');
     }, app.limit);
