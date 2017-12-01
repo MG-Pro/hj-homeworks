@@ -37,16 +37,14 @@ function createThumbnail(video) {
 }
 
 function record(app, config = app.config, limit = app.limit) {
-  let promise = new Promise((done, fail) => {
+  return new Promise((done, fail) => {
     app.mode = 'preparing';
     app.config = config;
     app.limit = limit;
     const result = {};
     navigator.mediaDevices.getUserMedia(app.config)
       .then((stream) => {
-        app.mode = 'recording';
         app.preview.srcObject = stream;
-
         let recorder = new MediaRecorder(stream);
         let chunks = [];
         recorder.addEventListener('dataavailable', (e) => chunks.push(e.data));
@@ -54,23 +52,23 @@ function record(app, config = app.config, limit = app.limit) {
           const videoData = new Blob(chunks, { 'type' : recorder.mimeType });
           chunks = null;
           recorder = stream = null;
-          app.mode = 'sending';
           app.preview.srcObject = null;
           result.video = videoData;
           createThumbnail(videoData)
             .then((res) => {
               result.frame = res;
+              app.mode = 'sending';
+              done(result) ;
             });
         });
         setTimeout(() => {
+          app.mode = 'recording';
           recorder.start();
           setTimeout(() => {
             recorder.stop();
           }, app.limit);
         }, 1000);
-
       });
-    done(result) ;
   });
 }
 
