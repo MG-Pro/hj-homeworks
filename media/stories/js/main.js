@@ -191,7 +191,3 @@ class Stories {
 }
 
 const app = new Stories('.stories');
-record(app)
-  .then(a => {
-    console.log(a);
-  });

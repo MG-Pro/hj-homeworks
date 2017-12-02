@@ -57,7 +57,6 @@ function record(app, config = app.config, limit = app.limit) {
           createThumbnail(videoData)
             .then((res) => {
               result.frame = res;
-              app.mode = 'sending';
               done(result) ;
             });
         });
