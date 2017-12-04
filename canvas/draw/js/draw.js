@@ -32,7 +32,7 @@ function getWidth() {
     brushWidthCount = false;
   if (ctx.lineWidth === 100)
     brushWidthCount = true;
-  if (brushWidhtCount)
+  if (brushWidthCount)
     return brushWidht--;
   else
     return brushWidht++;
