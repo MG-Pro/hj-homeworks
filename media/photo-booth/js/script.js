@@ -66,7 +66,7 @@ function takePhoto(e) {
                   class: 'material-icons'
                 },
                 childs: ['file_download']
-              },
+              }
             ]
           },
           {
@@ -78,7 +78,7 @@ function takePhoto(e) {
                   class: 'material-icons'
                 },
                 childs: ['file_upload']
-              },
+              }
             ]
           },
           {
@@ -90,7 +90,7 @@ function takePhoto(e) {
                   class: 'material-icons'
                 },
                 childs: ['delete']
-              },
+              }
             ]
           }
         ]
@@ -98,33 +98,45 @@ function takePhoto(e) {
     ]
   };
 
-  const list= document.querySelector('.list');
+  const list = document.querySelector('.list');
   const imgNode = createElement(imgNodeProps);
   list.insertBefore(imgNode, list.firstElementChild);
   list.addEventListener('click', listAction);
 
   function listAction(e) {
     e.stopPropagation();
-    if(e.target.textContent === 'delete') {
-      list.removeChild(e.target.parentElement.parentElement.parentElement);
+    let curListItem = e.target.parentElement.parentElement.parentElement;
+    if (e.target.textContent === 'delete') {
+      list.removeChild(curListItem);
 
     } else if (e.target.textContent === 'file_upload') {
+      const curImg = curListItem.firstElementChild;
+      const listCanvas = document.createElement('canvas');
+      listCanvas.width = curImg.naturalWidth;
+      listCanvas.height = curImg.naturalHeight;
+      const listCtx = listCanvas.getContext('2d');
+      listCtx.drawImage(curImg, 0, 0);
+
       const data = new FormData();
-      data.append('image', src);
+      listCanvas.toBlob((blob) => {
+        data.append('image', blob);
+      });
+
       fetch('https://neto-api.herokuapp.com/photo-booth ', {
         method: 'POST',
         body: data
       })
-        .then(res => {return res.text()})
+        .then(res => {
+          return res.text()
+        })
         .then(res => {
           console.log(res);
           e.target.parentNode.style.display = 'none';
         })
         .catch(err => console.log(err));
-
     }
   }
-  
+
   function createElement(node) {
     if (typeof node === 'string') {
       return document.createTextNode(node);
