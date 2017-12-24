@@ -120,20 +120,19 @@ function takePhoto(e) {
       const data = new FormData();
       listCanvas.toBlob((blob) => {
         data.append('image', blob);
+        fetch('https://neto-api.herokuapp.com/photo-booth', {
+          method: 'POST',
+          body: data
+        })
+          .then(res => {
+            return res.text()
+          })
+          .then(res => {
+            console.log(res);
+            e.target.parentNode.style.display = 'none';
+          })
+          .catch(err => console.log(err));
       });
-
-      fetch('https://neto-api.herokuapp.com/photo-booth ', {
-        method: 'POST',
-        body: data
-      })
-        .then(res => {
-          return res.text()
-        })
-        .then(res => {
-          console.log(res);
-          e.target.parentNode.style.display = 'none';
-        })
-        .catch(err => console.log(err));
     }
   }
 
